@@ -1,0 +1,47 @@
+#!/usr/bin/perl
+
+use Acme::Mandlebrot;
+use GD;
+
+my $mandlebrot = Acme::Mandlebrot->new({ width=>1024 , height=>768});
+
+my $image = new GD::Image($mandlebrot->width(),$mandlebrot->height());
+
+my @black = (0,0,0);
+my @white = (255,255,255);
+my @mid   = (255,0,0); # Red
+my $colours = {};
+
+my $max_iterations = $mandlebrot->max_iterations();
+foreach my $i (0..($max_iterations/2)-1) { # 0..9
+  $colours->{$i}=$image->colorAllocate(
+     int(($black[0]*(($max_iterations/2)-$i) + $mid[0]*$i)/($max_iterations/2)),
+     int(($black[1]*(($max_iterations/2)-$i) + $mid[1]*$i)/($max_iterations/2)),
+     int(($black[2]*(($max_iterations/2)-$i) + $mid[2]*$i)/($max_iterations/2)),
+  );
+}
+foreach my $i (($max_iterations/2)..$max_iterations) { #10..20
+  $colours->{$i}= $image->colorAllocate(
+     int(($mid[0]*($max_iterations-$i)+$white[0]*($i-$max_iterations/2))/($max_iterations/2)),
+     int(($mid[1]*($max_iterations-$i)+$white[1]*($i-$max_iterations/2))/($max_iterations/2)),
+     int(($mid[2]*($max_iterations-$i)+$white[2]*($i-$max_iterations/2))/($max_iterations/2)),
+  );
+}
+
+$|=1;
+
+@data=$mandlebrot->process_block();
+
+foreach my $row (@data) {
+  $x++;
+  my $y = $res->{y1} - 1;
+  foreach my $pixel (@$row) {
+    $y++;
+    $image->setPixel($x,$y,$colours->{$pixel});
+  }
+}
+
+open(FILE,">mandel.png") || die "Could not open file for writing";
+binmode (FILE);
+print FILE $image->png;
+close(FILE);

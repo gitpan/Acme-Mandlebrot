@@ -1,0 +1,5 @@
+MANIFEST			This list of files
+Makefile.PL
+Mandlebrot.pm
+examples/gd
+t/Acme-Mandlebrot.t
