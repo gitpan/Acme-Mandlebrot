@@ -5,7 +5,7 @@ use warnings;
 
 use Class::MethodMaker get_set => [qw( max_iterations width height )];
 
-our $VERSION='0.01';
+our $VERSION='0.02';
 
 sub new {
   my $class = shift;
@@ -87,6 +87,11 @@ Acme::Mandlebrot generates mandlebrot sets.
 =head1 TODO
 
 More documentation, some more examples and an xs version.
+
+=head1 KUDOS
+
+Dave Steiner for spotting where i'd been sloppy and left something from a previous incarnation in
+the gd example.
 
 =head1 AUTHOR
 

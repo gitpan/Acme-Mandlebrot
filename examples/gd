@@ -32,9 +32,10 @@ $|=1;
 
 @data=$mandlebrot->process_block();
 
+my $x = -1;
 foreach my $row (@data) {
   $x++;
-  my $y = $res->{y1} - 1;
+  my $y = -1;
   foreach my $pixel (@$row) {
     $y++;
     $image->setPixel($x,$y,$colours->{$pixel});
